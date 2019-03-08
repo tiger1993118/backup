@@ -5,11 +5,13 @@ import base64
 # Get Bytes
 client = boto3.client("s3")
 resource = boto3.resource("s3")
-object = resource.Object("test-upload-bucket1", "Test1.png")
 
 def lambda_handler(event, context):
     
+    object = resource.Object("test-upload-bucket1", event["name"])
     res = object.get()
+    
+    #convertion
     bytes_res = base64.b64encode(res['Body'].read())
     ret = str(bytes_res, 'utf-8')
     print(ret)
